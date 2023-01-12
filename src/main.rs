@@ -18,7 +18,7 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
     let nationality_file = match nationality.to_ascii_lowercase().as_str() {
         "water" => String::from("./data/water_names.txt"),
         "fire" => String::from("./data/fire_names.txt"),
-        "earth" => String::from("/data/earth_names.txt"),
+        "earth" => String::from("./data/earth_names.txt"),
         "air" => String::from("./data/air_names.txt"),
         _ => panic!("please specify a nationality (water, fire, earth and air)"),
     };
@@ -55,49 +55,38 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
     match training.as_str() {
         "air bending" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Big gust of wind"),
-            "major" => training = format!("{}: {}", training, "Throwing incoming physical physical attacks 
-                                                    off-course with wind, gliding along on air currents or balls 
-                                                    of whirling air, air currents or balls of whirling air"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Impossible grace, near-weightlessness,
-                                                    perfect dogding, gale-force winds"),
+            "major" => training = format!("{}: {}", training, "Throwing incoming physical physical attacks off-course with wind, gliding along on air currents or balls of whirling air, air currents or balls of whirling air"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Impossible grace, near-weightlessness, perfect dogding, gale-force winds"),
             _ => panic!("How important is this guy? O_o"),
         },
         "water bending" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Channeling big jets of water"),
             "major" => training = format!("{}: {}", training, "Use ice creatively to shape the environment, heal(rarer)"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Instantly changing water to ice and back, 
-                                                    many limbs of water, sliding ice"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Instantly changing water to ice and back, many limbs of water, sliding ice"),
             _ => panic!("Sus water boy"),
         },
         "fire bending" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Throw gouts of flame"),
-            "major" => training = format!("{}: {}", training, "Light the environment aflame, 
-                                                    launch themselves into the air with fire"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Throwing fire at long distances,
-                                                     enormous fireballs, waves of flame"),
+            "major" => training = format!("{}: {}", training, "Light the environment aflame, launch themselves into the air with fire"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Throwing fire at long distances, enormous fireballs, waves of flame"),
             _ => panic!("Fiery pants!"),
         },
         "earth bending" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Hurl rocks"),
             "major" => training = format!("{}: {}", training, "Change the environment, exhibit seismic sense"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Instant shiftss from defense to offense 
-                                                    (wall of earth turns into hurled rock), precision control,
-                                                    massive control"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Instant shiftss from defense to offense (wall of earth turns into hurled rock), precision control, massive control"),
             _ => panic!("BOWLING!"),
         },
         "technology" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Obviously dangerous machines (harpoon, guns, big tanks)"),
-            "major" => training = format!("{}: {}", training, "Tricks, surprise weapons, and unexpected capabilities -- 
-                                                    but only a few"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Endless supplies of small devices with 
-                                                    dangerous uses"),
+            "major" => training = format!("{}: {}", training, "Tricks, surprise weapons, and unexpected capabilities -- but only a few"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Endless supplies of small devices with dangerous uses"),
             _ => panic!("Screwed up!"),
         },
         "weapons" => match importance.to_ascii_lowercase().as_str() {
             "minor" => training = format!("{}: {}", training, "Swing with regular weapons"),
             "major" => training = format!("{}: {}", training, "Dance around acrobatically, attack with strength and power"),
-            "master" | "legendary" => training = format!("{}: {}", training, "Distinctive and difficult weapons used 
-                                                    with perfect precision and might"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Distinctive and difficult weapons used with perfect precision and might"),
             _ => panic!("I gout cut :("),
         }
         _ => panic!("Training Gone Wrong! O_o"),
