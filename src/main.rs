@@ -15,13 +15,13 @@ struct NPC {
 
 fn generate_npc(nationality: String, importance: String) -> NPC {
 
-    let nationality_file = match nationality.to_ascii_lowercase().as_str() {
-        "water" => String::from("./data/water_names.txt"),
-        "fire" => String::from("./data/fire_names.txt"),
-        "earth" => String::from("./data/earth_names.txt"),
-        "air" => String::from("./data/air_names.txt"),
-        _ => panic!("please specify a nationality (water, fire, earth and air)"),
-    };
+    // let nationality_file = match nationality.to_ascii_lowercase().as_str() {
+    //     "water" => String::from("./data/water_names.txt"),
+    //     "fire" => String::from("./data/fire_names.txt"),
+    //     "earth" => String::from("./data/earth_names.txt"),
+    //     "air" => String::from("./data/air_names.txt"),
+    //     _ => panic!("please specify a nationality (water, fire, earth and air)"),
+    // };
 
     let importance_value: u8 = match importance.to_ascii_lowercase().as_str() {
         "minor" => 1,
@@ -32,25 +32,28 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
     };
 
     //name
-    let mut file = File::open(nationality_file).unwrap();
-    let mut reader = BufReader::new(file);
-    let mut names: Vec<String> = vec![];
-    for line in reader.lines() {
-        names.push(line.unwrap());
-    }
-    let name = names[(rand::random::<usize>() %
-        names.len())].to_string();
+    // let mut file = File::open(nationality_file).unwrap();
+    // let mut reader = BufReader::new(file);
+    // let mut names: Vec<String> = vec![];
+    // for line in reader.lines() {
+    //     names.push(line.unwrap());
+    // }
+    // let name = names[(rand::random::<usize>() %
+    //     names.len())].to_string();
+    let name = read_in_stat(None, Some(&nationality));
 
     //training
-    file = File::open("./data/training.txt").unwrap();
-    reader = BufReader::new(file);
-    let mut trainings: Vec<String> = vec![];
+    // file = File::open("./data/training.txt").unwrap();
+    // reader = BufReader::new(file);
+    // let mut trainings: Vec<String> = vec![];
 
-    for line in reader.lines() {
-        trainings.push(line.unwrap());
-    }
-    let mut training = trainings[(rand::random::<usize>() %
-        trainings.len())].to_string();
+    // for line in reader.lines() {
+    //     trainings.push(line.unwrap());
+    // }
+    // let mut training = trainings[(rand::random::<usize>() %
+    //     trainings.len())].to_string();
+    let mut training = read_in_stat(Some("./data/training.txt"), Some(&nationality));
+
 
     match training.as_str() {
         "air bending" => match importance.to_ascii_lowercase().as_str() {
@@ -93,29 +96,31 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
     }
 
     //drive
-    file = File::open("./data/drives.txt").unwrap();
-    reader = BufReader::new(file);
-    let mut drives: Vec<String> = vec![];
+    // file = File::open("./data/drives.txt").unwrap();
+    // reader = BufReader::new(file);
+    // let mut drives: Vec<String> = vec![];
 
-    for line in reader.lines() {
-        drives.push(line.unwrap());
-    }
-    let drive = drives[(rand::random::<usize>() %
-        drives.len())].to_string();
+    // for line in reader.lines() {
+    //     drives.push(line.unwrap());
+    // }
+    // let drive = drives[(rand::random::<usize>() %
+    //     drives.len())].to_string();
+    let drive = read_in_stat(Some("./data/drives.txt"), None);
 
     //principle
     let principle = thread_rng().gen_range(0..=importance_value);
 
     //technique
-    file = File::open("./data/techniques.txt").unwrap();
-    reader = BufReader::new(file);
-    let mut techniques: Vec<String> = vec![];
+    // file = File::open("./data/techniques.txt").unwrap();
+    // reader = BufReader::new(file);
+    // let mut techniques: Vec<String> = vec![];
 
-    for line in reader.lines() {
-        techniques.push(line.unwrap());
-    }
-    let technique = techniques[(rand::random::<usize>() %
-        techniques.len())].to_string();
+    // for line in reader.lines() {
+    //     techniques.push(line.unwrap());
+    // }
+    // let technique = techniques[(rand::random::<usize>() %
+    //     techniques.len())].to_string();
+    let technique = read_in_stat(Some("./data/techniques.txt"), None);
 
     NPC {
         name,
@@ -124,6 +129,45 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
         principle,
         technique,
     }
+}
+
+fn read_in_stat(file_path: Option<&str>, nationality: Option<&String>) -> String {
+    let filepath;
+    let nat = if nationality != None {
+        nationality.unwrap().as_str()
+    } else {
+        ""
+    };
+
+    if file_path == None {
+        match nat {
+            "water" => filepath = "./data/water_names.txt",
+            "air" => filepath = "./data/air_names.txt",
+            "earth" => filepath = "./data/earth_names.txt",
+            "fire" => filepath = "./data/fire_names.txt",
+            _ => panic!("NO FILE PATH OR NATIONALITY PROVIDED"),
+        }
+    } else {
+        filepath = file_path.unwrap();
+    }
+
+    let file = File::open(filepath).unwrap();
+    let reader = BufReader::new(file);
+    let mut stats: Vec<String> = vec![];
+
+    for line in reader.lines() {
+        stats.push(line.unwrap());
+    }
+
+    if file_path != None && nationality != None {
+        stats.retain(|s| !s.contains("bending") || s.contains(nat));
+    }
+
+    stats[(rand::random::<usize>() % stats.len())].to_string()
+
+
+
+
 }
 
 fn main() {
