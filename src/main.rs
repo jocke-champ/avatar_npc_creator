@@ -85,7 +85,21 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
                                                     massive control"),
             _ => panic!("BOWLING!"),
         },
-        "technology" => match
+        "technology" => match importance.to_ascii_lowercase().as_str() {
+            "minor" => training = format!("{}: {}", training, "Obviously dangerous machines (harpoon, guns, big tanks)"),
+            "major" => training = format!("{}: {}", training, "Tricks, surprise weapons, and unexpected capabilities -- 
+                                                    but only a few"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Endless supplies of small devices with 
+                                                    dangerous uses"),
+            _ => panic!("Screwed up!"),
+        },
+        "weapons" => match importance.to_ascii_lowercase().as_str() {
+            "minor" => training = format!("{}: {}", training, "Swing with regular weapons"),
+            "major" => training = format!("{}: {}", training, "Dance around acrobatically, attack with strength and power"),
+            "master" | "legendary" => training = format!("{}: {}", training, "Distinctive and difficult weapons used 
+                                                    with perfect precision and might"),
+            _ => panic!("I gout cut :("),
+        }
         _ => panic!("Training Gone Wrong! O_o"),
     }
 
