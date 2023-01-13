@@ -2,7 +2,6 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use text_io::scan;
 use rand::prelude::*;
-use termion::*;
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -107,25 +106,11 @@ fn expand_training(training: &str, importance: &str) -> String {
 
 fn main() {
     let (nationality, importance);
-    println!("{bold}{fg}Enter Nationality (Water, Earth, Fire, Air) Followed By Importance (Minor, Major, Master, Legendary) :{reset}",
-    bold = style::Bold,
-    fg = color::Fg(color::Red),
-    reset = style::Reset);
+    println!("Enter Nationality (Water, Earth, Fire, Air) Followed By Importance (Minor, Major, Master, Legendary) :");
     scan!("{} {}", nationality, importance);
 
     let npc = generate_npc(nationality, importance);
-    println!("\n{reset}{yellow}❃❃❃❃❃❃❃❃❃❃",
-    yellow = color::Fg(color::Yellow),
-    reset = style::Reset);
-    println!("{bold}{red}{name}",
-    bold = style::Bold,
-    red = color::Fg(color::LightRed),
-    name = npc.name);
-    println!("{magenta}{training}\n{cyan}drive: {drive}\n{light_yellow}principle: {principle}",
-    cyan = color::Fg(color::Cyan),
-    magenta = color::Fg(color::LightMagenta),
-    light_yellow = color::Fg(color::LightYellow),
-    training = npc.training,
-    drive = npc.drive,
-    principle = npc.principle);
+    println!("\n❃❃❃❃❃❃❃❃❃❃");
+    println!("{}", npc.name);
+    println!("{}\ndrive: {}\nprinciple: {}", npc.training, npc.drive, npc.principle);
 }
