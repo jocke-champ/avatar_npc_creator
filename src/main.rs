@@ -11,18 +11,9 @@ struct NPC {
     training: String,
     drive: String,
     principle: u8,
-    technique: String,
 }
 
 fn generate_npc(nationality: String, importance: String) -> NPC {
-
-    let importance_value: u8 = match importance.to_ascii_lowercase().as_str() {
-        "minor" => 1,
-        "major" => thread_rng().gen_range(2..=3),
-        "master" => thread_rng().gen_range(4..=5),
-        "legendary" => thread_rng().gen_range(6..=8),
-        _ => panic!("please specify the importance value of the character (minor, major, master, legendary)"),
-    };
 
     let name = read_in_stat(None, Some(&nationality));
 
@@ -32,16 +23,19 @@ fn generate_npc(nationality: String, importance: String) -> NPC {
 
     let drive = read_in_stat(Some("./data/drives.txt"), None);
 
-    let principle = thread_rng().gen_range(0..=importance_value);
-
-    let technique = read_in_stat(Some("./data/techniques.txt"), None);
+    let principle: u8 = match importance.to_ascii_lowercase().as_str() {
+        "minor" => thread_rng().gen_range(0..=1),
+        "major" => thread_rng().gen_range(0..=2),
+        "master" => thread_rng().gen_range(0..=3),
+        "legendary" => thread_rng().gen_range(0..=4),
+        _ => panic!("please specify the importance value of the character (minor, major, master, legendary)"),
+    };
 
     NPC {
         name,
         training,
         drive,
         principle,
-        technique,
     }
 }
 
@@ -113,20 +107,25 @@ fn expand_training(training: &str, importance: &str) -> String {
 
 fn main() {
     let (nationality, importance);
-    println!("Enter Nationality (Water, Earth, Fire, Air) Followed By Importance (Minor, Major, Master, Legendary) :");
+    println!("{bold}{fg}Enter Nationality (Water, Earth, Fire, Air) Followed By Importance (Minor, Major, Master, Legendary) :{reset}",
+    bold = style::Bold,
+    fg = color::Fg(color::Red),
+    reset = style::Reset);
     scan!("{} {}", nationality, importance);
 
     let npc = generate_npc(nationality, importance);
-    println!("{yellow}❃❃❃❃❃❃❃❃❃❃",
-    yellow = color::Fg(color::Yellow));
+    println!("\n{reset}{yellow}❃❃❃❃❃❃❃❃❃❃",
+    yellow = color::Fg(color::Yellow),
+    reset = style::Reset);
     println!("{bold}{red}{name}",
     bold = style::Bold,
-    red = color::Fg(color::Red),
+    red = color::Fg(color::LightRed),
     name = npc.name);
-    println!("{blue}{training}\n{drive}\n{principle}\n{technique} (techniques TBD)",
-    blue = color::Fg(color::Blue),
+    println!("{magenta}{training}\n{cyan}drive: {drive}\n{light_yellow}principle: {principle}",
+    cyan = color::Fg(color::Cyan),
+    magenta = color::Fg(color::LightMagenta),
+    light_yellow = color::Fg(color::LightYellow),
     training = npc.training,
     drive = npc.drive,
-    principle = npc.principle,
-    technique = npc.technique);
+    principle = npc.principle);
 }
