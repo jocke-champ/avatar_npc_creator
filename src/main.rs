@@ -12,15 +12,13 @@ struct NPC {
 
 fn generate_npc(nationality: String, importance: String) -> NPC {
 
-    let name = funcs::read_in_stat(None, Some(&nationality));
+    let name = funcs::read_in_stat("", &nationality);
 
-    let mut training = funcs::read_in_stat(Some("./data/training.txt"), Some(&nationality));
+    let training = funcs::expand_training(funcs::Training::random_from_str_lowercase(nationality).unwrap(), &funcs::Importance::from_str_lowercase(&importance).unwrap());
 
-    training = funcs::expand_training(training.as_str(), importance.to_ascii_lowercase().as_str());
+    let drive = funcs::read_in_stat("./data/drives.txt", "");
 
-    let drive = funcs::read_in_stat(Some("./data/drives.txt"), None);
-
-    let principle: u8 = funcs::generate_principle(importance.to_ascii_lowercase().as_str());
+    let principle: u8 = funcs::generate_principle(importance);
 
     NPC {
         name,
