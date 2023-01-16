@@ -5,7 +5,7 @@ use crate::funcs::read_in_stat;
 use crate::funcs::Importance;
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NPC {
     name: String,
     training: String,

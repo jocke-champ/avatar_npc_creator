@@ -2,6 +2,8 @@ use serde_json::{from_reader, to_writer};
 use std::fs::File;
 use funcs::NPC;
 
+
+
 // Define a struct for representing a relationship between two NPCs
 #[derive(Serialize, Deserialize)]
 struct Relationship {
@@ -35,4 +37,6 @@ fn generate_relationship() {
 
     // Serialize the relationships and write them to the relationships.json file
     to_writer(file, &relationships).unwrap();
+
+
 }
