@@ -10,6 +10,9 @@ struct NPC {
     drive: String,
     personality: String,
     occupation: String,
+    belief: String,
+    quirk: String,
+    physical_traits: String,
     age: u8,
     principle_display: String,
 }
@@ -23,9 +26,12 @@ fn generate_npc(nationality: String, importance: String) -> Result<NPC, &'static
         None => return Err("Invalid nationality provided"),
     };
     let name = funcs::read_in_stat("", &nationality);
-    let drive = funcs::read_in_stat(&funcs::get_file_path("drives"), "");
-    let personality = funcs::read_in_stat(&funcs::get_file_path("personalities"), "");
-    let occupation = funcs::read_in_stat(&funcs::get_file_path("occupations"), "");
+    let drive = funcs::read_in_stat(&funcs::get_file_path("personal/drives"), "");
+    let personality = funcs::read_in_stat(&funcs::get_file_path("personal/personalities"), "");
+    let occupation = funcs::read_in_stat(&funcs::get_file_path("personal/occupations"), "");
+    let belief = funcs::read_in_stat(&funcs::get_file_path("personal/personal_believes"), "");
+    let quirk = funcs::read_in_stat(&funcs::get_file_path("personal/quirks"), "");
+    let physical_traits = funcs::read_in_stat(&funcs::get_file_path("personal/physical_traits"), "");
     let principle = match funcs::Importance::from_str_lowercase(&importance) {
         Some(_) => funcs::generate_principle(&importance),
         None => return Err("Invalid importance provided"),
@@ -40,6 +46,9 @@ fn generate_npc(nationality: String, importance: String) -> Result<NPC, &'static
         drive,
         personality,
         occupation,
+        belief,
+        quirk,
+        physical_traits,
         age,
         principle_display,
     })
@@ -60,6 +69,9 @@ fn main() {
     println!("Drive: {}", npc.drive);
     println!("Personality: {}", npc.personality);
     println!("Occupation: {}", npc.occupation);
+    println!("Belief: {}", npc.belief);
+    println!("Quirk: {}", npc.quirk);
+    println!("Physical Traits: {}", npc.physical_traits);
     println!("Principle: {}", npc.principle_display);
     println!("Age: {}", npc.age);
 }
