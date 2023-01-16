@@ -110,10 +110,10 @@ pub fn read_in_stat(file_path: &str, nationality: &str) -> String {
     let filepath = match (file_path, nationality) {
         (path, "") => path,
         ("", nat) => match nat {
-            "water" => "./data/water_names.txt",
-            "air" => "./data/air_names.txt",
-            "earth" => "./data/earth_names.txt",
-            "fire" => "./data/fire_names.txt",
+            "water" => "./data/names/water_names.txt",
+            "air" => "./data/names/air_names.txt",
+            "earth" => "./data/names/earth_names.txt",
+            "fire" => "./data/names/fire_names.txt",
             _ => panic!("NO FILE PATH OR NATIONALITY PROVIDED"),
         },
         (_path, _nat) => {
