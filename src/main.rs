@@ -1,3 +1,4 @@
+use funcs::generate_age;
 use text_io::scan;
 mod funcs;
 
@@ -7,25 +8,41 @@ struct NPC {
     name: String,
     training: String,
     drive: String,
-    principle: u8,
+    personality: String,
+    occupation: String,
+    age: u8,
+    principle_display: String,
 }
 
-fn generate_npc(nationality: String, importance: String) -> NPC {
-
+fn generate_npc(nationality: String, importance: String) -> Result<NPC, &'static str> {
+    let training = match funcs::Training::random_from_str_lowercase(nationality.clone()) {
+        Some(t) => match funcs::Importance::from_str_lowercase(&importance) {
+            Some(i) => funcs::expand_training(t, &i),
+            None => return Err("Invalid importance provided"),
+        },
+        None => return Err("Invalid nationality provided"),
+    };
     let name = funcs::read_in_stat("", &nationality);
+    let drive = funcs::read_in_stat(&funcs::get_file_path("drives"), "");
+    let personality = funcs::read_in_stat(&funcs::get_file_path("personalities"), "");
+    let occupation = funcs::read_in_stat(&funcs::get_file_path("occupations"), "");
+    let principle = match funcs::Importance::from_str_lowercase(&importance) {
+        Some(_) => funcs::generate_principle(&importance),
+        None => return Err("Invalid importance provided"),
+    };
+    let age = generate_age();
+    let principle_display = funcs::Importance::from_str_lowercase(&importance).unwrap().principle_string(principle);
+    // let occupation
 
-    let training = funcs::expand_training(funcs::Training::random_from_str_lowercase(nationality).unwrap(), &funcs::Importance::from_str_lowercase(&importance).unwrap());
-
-    let drive = funcs::read_in_stat("./data/drives.txt", "");
-
-    let principle: u8 = funcs::generate_principle(importance);
-
-    NPC {
+    Ok(NPC {
         name,
         training,
         drive,
-        principle,
-    }
+        personality,
+        occupation,
+        age,
+        principle_display,
+    })
 }
 
 fn main() {
@@ -33,8 +50,16 @@ fn main() {
     println!("Enter Nationality (Water, Earth, Fire, Air) Followed By Importance (Minor, Major, Master, Legendary) :");
     scan!("{} {}", nationality, importance);
 
-    let npc = generate_npc(nationality, importance);
-    println!("\n❃❃❃❃❃❃❃❃❃❃");
-    println!("{}", npc.name);
-    println!("{}\ndrive: {}\nprinciple: {}", npc.training, npc.drive, npc.principle);
+    let npc = generate_npc(nationality, importance).unwrap_or_else(|e| {
+        println!("Error: {}", e);
+        std::process::exit(1);
+    });
+    println!("\n❃❃❃❃❃❃❃❃❃❃\n");
+    println!("Name: {}", npc.name);
+    println!("Training: {}", npc.training);
+    println!("Drive: {}", npc.drive);
+    println!("Personality: {}", npc.personality);
+    println!("Occupation: {}", npc.occupation);
+    println!("Principle: {}", npc.principle_display);
+    println!("Age: {}", npc.age);
 }

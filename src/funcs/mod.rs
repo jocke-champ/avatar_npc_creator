@@ -11,7 +11,7 @@ pub enum Importance {
 }
 
 impl Importance {
-    fn get_stop_count(&self) -> usize {
+    pub fn get_stop_count(&self) -> usize {
         match self {
             Importance::Minor => 1,
             Importance::Major => 2,
@@ -27,6 +27,15 @@ impl Importance {
             "legendary" => Some(Importance::Legendary),
             _ => None,
         }
+    }
+    pub fn principle_string(&self, assigned: u8) -> String {
+        let max_principle = match self {
+            Importance::Minor => 1,
+            Importance::Major => 2,
+            Importance::Master => 3,
+            Importance::Legendary => 4,
+        };
+        format!("{}{}", "[*]".repeat(assigned as usize), "[]".repeat(max_principle as usize - assigned as usize))
     }
 }
 
@@ -127,7 +136,7 @@ pub fn read_in_stat(file_path: &str, nationality: &str) -> String {
     stats[(rand::random::<usize>() % stats.len())].to_string()
 }
 
-pub fn generate_principle(importance: String) -> u8 {
+pub fn generate_principle(importance: &String) -> u8 {
     let mut rng = rand::thread_rng();
     let max_principle = match importance.as_str() {
         "minor" => 1,
@@ -138,3 +147,14 @@ pub fn generate_principle(importance: String) -> u8 {
     };
     rng.gen_range(0..=max_principle + 1)
 }
+
+pub fn generate_age() -> u8 {
+    let mut rng = thread_rng();
+    rng.gen_range(3..=100)
+}
+
+pub fn get_file_path(input: &str) -> String {
+    format!("./data/{}.txt", input)
+}
+
+
